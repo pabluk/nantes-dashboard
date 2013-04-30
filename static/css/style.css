@@ -1,0 +1,39 @@
+html {
+    min-height: 100%;
+    background: #cecece url('../img/bg.jpg') top right no-repeat;
+    -webkit-background-size: cover;
+         -o-background-size: cover;
+            background-size: cover;
+
+}
+body {
+    min-height: 100%;
+    font: 24px/1.4 'PT Sans', sans-serif;
+    color: #fff;
+    text-shadow: 0 4px 5px rgba(0, 0, 0, 0.90);
+    background: transparent;
+}
+h1 {
+    font-size: 4.3em; line-height: 1em;
+}
+#clock {
+    font-size: 9.0em; line-height: 1.5em;
+}
+h2 {
+    font-size: 3.5em; line-height: 1.3em;
+}
+h3 {
+    font-size: 2.5em; line-height: 1.3em;
+}
+
+@media (max-width: 767px) {
+    body {
+        font: 14px/1.4 'PT Sans', sans-serif;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font: 10px/1.4 'PT Sans', sans-serif;
+    }
+}
