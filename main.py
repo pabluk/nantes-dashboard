@@ -1,28 +1,59 @@
 import os
+import json
 import jinja2
 import webapp2
+from google.appengine.api import memcache
+
 from nantes_transport import BiclooStation, TANStation
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
+
 class MainPage(webapp2.RequestHandler):
-
     def get(self):
-        bicloo_stations = [
-            BiclooStation('18', u'PLACE VIARME'.title()),
-            BiclooStation('17', u'SAINTE ELISABTEH'.title()),
-        ]
-
-        tan_station = TANStation('VIAR', 2)
-
-        template_values = {
-            'bicloo_stations': bicloo_stations,
-            'tan_station': tan_station,
-        }
+        template_values = {}
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
-app = webapp2.WSGIApplication([('/', MainPage)],
-                              debug=True)
+
+class BiclooStationJSON(webapp2.RequestHandler):
+    def get(self):
+        station = {}
+
+        id = self.request.get('id')
+        name = self.request.get('name')
+        if id and name:
+            key_station = u'bicloo:%s:%s' % (id, name)
+            station = memcache.get(key_station)
+            if station is None:
+                station = BiclooStation(id, name)
+                memcache.add(key_station, station, 60)
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(station.__dict__))
+
+
+class TANStationJSON(webapp2.RequestHandler):
+    def get(self):
+        station = {}
+
+        code = self.request.get('code')
+        direction = self.request.get('direction')
+        if code and direction:
+            key_station = u'tan:%s:%s' % (code, direction)
+            station = memcache.get(key_station)
+            if station is None:
+                station = TANStation(code, direction)
+                memcache.add(key_station, station, 60)
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(station.__dict__))
+
+
+app = webapp2.WSGIApplication([
+                                ('/', MainPage),
+                                ('/bicloo', BiclooStationJSON),
+                                ('/tan', TANStationJSON),
+                              ], debug=True)

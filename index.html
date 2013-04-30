@@ -26,26 +26,19 @@
         <div class="row-fluid">
             <div class="span12 text-center">
                 <h1 class="text-center">Nantes, 10 &deg;C</h1>
-                <h1 id="date">...</h1>
-                <h1 id="clock" class="text-center">00:00:00</h1>
+                <h1 id="date"></h1>
+                <h1 id="clock" class="text-center"></h1>
             </div>
         </div>
         <div class="row-fluid">
-            <div class="span6 text-center">
+            <div id="tan" class="span6 text-center">
                 <h3>TAN</h3>
-                {% for s in tan_station.slots %}
-                    {% if loop.first %}<h1>{% else %}<h3>{% endif %}
-                    {{ s.terminal }} {{ s.time }}
-                    {% if loop.first %}</h1>{% else %}</h3>{% endif %}
-                {% endfor %}
+                <h1>...</h1>
             </div>
-            <div class="span6 text-center">
+            <div id="bicloo" class="span6 text-center">
                 <h3>BICLOO</h3>
-                {% for s in bicloo_stations %}
-                    {% if loop.first %}<h1>{% else %}<h3>{% endif %}
-                    {{ s.name }} {{ s.available }}D {{ s.free }}L
-                    {% if loop.first %}</h1>{% else %}</h3>{% endif %}
-                {% endfor %}
+                <h1 id="bicloo-1">...</h1>
+                <h3 id="bicloo-2"></h3>
             </div>
         </div>
     </div>

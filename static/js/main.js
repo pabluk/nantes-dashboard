@@ -40,7 +40,37 @@ function updateClock ( )
         
  }
 
+function updateBiclooStation(id, name, element) {
+    $.getJSON("/bicloo", {id: id, name: name})
+    .done(function(station){
+        $('#bicloo').show();
+        $(element).html(station.name + " " + station.available + "D " + station.free + "L");
+    });
+}
+
+function updateTANStation(code, direction, element) {
+    $.getJSON("/tan", {code: code, direction: direction})
+    .done(function(station){
+        $(element).show();
+        $(element).html("<h3>TAN</h3>");
+        $.each(station.slots, function(i, item){
+            if (i == 0) {
+                $(element).append("<h1>" + item.terminal + " " + item.time +"</h1>");
+            } else {
+                $(element).append("<h3>" + item.terminal + " " + item.time +"</h3>");
+            }
+        });
+    });
+}
+
 $(document).ready(function()
 {
-   setInterval('updateClock()', 1000);
+    setInterval('updateClock()', 1000);
+
+    setInterval('updateBiclooStation(18, "Place Viarme", "#bicloo-1")', 30000);
+    setInterval('updateBiclooStation(17, "Sainte Elisabeth", "#bicloo-2")', 30000);
+
+    setInterval('updateTANStation("VIAR", 2, "#tan")', 30000);
+
 });
+

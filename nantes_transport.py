@@ -20,7 +20,7 @@ class TANStation(object):
         data = json.loads(json_response)
         slots = []
         for item in data:
-            if item['sens'] == self.direction:
+            if item['sens'] == int(self.direction):
                 slot = {
                     'terminal': item['terminus'],
                     'time': item['temps'],

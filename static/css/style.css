@@ -26,6 +26,8 @@ h3 {
     font-size: 2.5em; line-height: 1.3em;
 }
 
+#tan, #bicloo { display: none; }
+
 @media (max-width: 767px) {
     body {
         font: 14px/1.4 'PT Sans', sans-serif;
