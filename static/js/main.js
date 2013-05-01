@@ -65,12 +65,16 @@ function updateTANStation(code, direction, element) {
 
 $(document).ready(function()
 {
+    updateClock();
     setInterval('updateClock()', 1000);
 
+    updateBiclooStation(18, "Place Viarme", "#bicloo-1");
     setInterval('updateBiclooStation(18, "Place Viarme", "#bicloo-1")', 30000);
+
+    updateBiclooStation(17, "Sainte Elisabeth", "#bicloo-2");
     setInterval('updateBiclooStation(17, "Sainte Elisabeth", "#bicloo-2")', 30000);
 
+    updateTANStation("VIAR", 2, "#tan");
     setInterval('updateTANStation("VIAR", 2, "#tan")', 30000);
-
 });
 
