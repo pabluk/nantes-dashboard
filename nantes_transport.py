@@ -15,6 +15,7 @@ class TANStation(object):
 
     def _get_data(self):
         request = urllib2.Request(self._URL_ENDPOINT % self.code)
+        request.add_header('Accept-language', 'fr_FR')
         f = urllib2.urlopen(request)
         json_response = f.read()
         data = json.loads(json_response)
@@ -24,6 +25,7 @@ class TANStation(object):
                 slot = {
                     'terminal': item['terminus'],
                     'time': item['temps'],
+                    'infotrafic': item['infotrafic'],
                 }
                 slots.append(slot)
         return slots
