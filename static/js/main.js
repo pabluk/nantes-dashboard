@@ -66,17 +66,18 @@ function updateTANStation(code, direction, element) {
 
 function updateNewsStream() {
     var messages = [
-        "Travaux 50 Otages-Hôtel de ville à Nantes",
-        "Itinéraire coupé en 2 à Foch Cathédrale",
-        "Travaux secteur Vincent Gâche à Nantes",
-        "Renforts Scolaires",
+        {message: "Travaux 50 Otages-Hôtel de ville à Nantes", source: "TAN Info Trafic"},
+        {message: "Itinéraire coupé en 2 à Foch Cathédrale", source: "TAN Info Trafic"},
+        {message: "Travaux secteur Vincent Gâche à Nantes", source: "TAN Info Trafic"},
+        {message: "Renforts Scolaires", source: "TAN Info Trafic"},
     ];
     return messages;
 }
 
 function updateMessage() {
     if (messages_pos == messages.length) { messages_pos = 0 }
-    $("#infotrafic").text(messages[messages_pos]);
+    $("#message").text(messages[messages_pos].message);
+    $("#source").text(messages[messages_pos].source);
     messages_pos++;
 }
 
