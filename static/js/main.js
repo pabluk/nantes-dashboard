@@ -75,11 +75,9 @@ function updateNewsStream() {
 }
 
 function updateMessage() {
-    $("#infotrafic").fadeOut(function() {
-        if (messages_pos == messages.length) { messages_pos = 0 }
-        $(this).text(messages[messages_pos]);
-        messages_pos++;
-    }).fadeIn();
+    if (messages_pos == messages.length) { messages_pos = 0 }
+    $("#infotrafic").text(messages[messages_pos]);
+    messages_pos++;
 }
 
 var messages = [];
@@ -101,7 +99,7 @@ $(document).ready(function()
 
     messages = updateNewsStream();
     updateMessage();
-    setInterval('updateMessage()', 5000);
+    setInterval('updateMessage()', 10000);
 
 });
 
