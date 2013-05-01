@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+import re
 import json
 import urllib
 import urllib2
 import xml.dom.minidom
+import feedparser
 
 
 class TANStation(object):
@@ -29,6 +31,57 @@ class TANStation(object):
                 }
                 slots.append(slot)
         return slots
+
+    def __repr__(self):
+        return "%s" % self.__dict__
+
+
+class InfoTrafic(object):
+    _APP_KEY = 'PCHAJB5HPICTLFU'
+    _URL_ENDPOINT = "http://data.nantes.fr/api/getInfoTraficTANTempsReel/1.0/%s/?output=json" % _APP_KEY
+
+    def __init__(self, only_lines=[]):
+        self.source = u'TAN Info Trafic'
+        self.only_lines = only_lines
+        self.messages = self._get_data()
+
+    def _get_data(self):
+        messages = []
+        request = urllib2.Request(self._URL_ENDPOINT)
+        f = urllib2.urlopen(request)
+        json_response = f.read()
+        data = json.loads(json_response)
+        infotrafic_list = data['opendata']['answer']['data']['ROOT']['LISTE_INFOTRAFICS']['INFOTRAFIC']
+        for item in  infotrafic_list:
+            if not self.only_lines:
+                messages.append({'message': item['INTITULE'], 'source': self.source})
+                continue
+            lines = item['TRONCONS'].split(';')
+            for line_data in lines:
+                line = re.search('\[(\w+)\/', line_data).group(1)
+                if line in self.only_lines:
+                    messages.append({'message': item['INTITULE'], 'source': self.source})
+        return messages
+
+
+    def __repr__(self):
+        return "%s" % self.__dict__
+
+
+class OuestFrance(object):
+    _FEED_URL = "http://www.ouest-france.fr/dma-rss_-Toutes-les-DMA-redac-RSS_40771--pere-redac--44109_filDMA.Htm"
+
+    def __init__(self):
+        self.source = u'Ouest France'
+        self.messages = self._get_data()
+
+    def _get_data(self):
+        messages = []
+        feed = feedparser.parse(self._FEED_URL)
+        for e in feed.entries[:40]:
+            messages.append({'message': e.title, 'source': self.source})
+        return messages
+
 
     def __repr__(self):
         return "%s" % self.__dict__
@@ -78,3 +131,5 @@ class BiclooStation(object):
 if __name__ == "__main__":
     print BiclooStation('18', u'PLACE VIARME')
     print TANStation('VIAR', 2)
+    print InfoTrafic()
+    print OuestFrance()

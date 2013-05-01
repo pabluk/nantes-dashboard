@@ -99,7 +99,7 @@ $(document).ready(function()
 
     updateNewsStream();
     updateMessage();
-    setInterval('updateMessage()', 10000);
+    setInterval('updateMessage()', 15000);
 
 });
 

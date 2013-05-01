@@ -5,6 +5,7 @@ import webapp2
 from google.appengine.api import memcache
 
 from nantes_transport import BiclooStation, TANStation
+from nantes_transport import InfoTrafic, OuestFrance
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(
@@ -54,12 +55,23 @@ class TANStationJSON(webapp2.RequestHandler):
 
 class NewsJSON(webapp2.RequestHandler):
     def get(self):
-        messages = [
-            {'message': "Travaux 50 Otages-Hotel de ville a Nantes", 'source': "TAN Info Trafic"},
-            {'message': "Itineraire coupe en 2 a Foch Cathedrale", 'source': "TAN Info Trafic"},
-            {'message': "Travaux secteur Vincent Gache a Nantes", 'source': "TAN Info Trafic"},
-            {'message': "Renforts Scolaires", 'source': "TAN Info Trafic"},
-        ]
+        messages = []
+
+        key_news = u'infotrafic'
+        messages_infotrafic = memcache.get(key_news)
+        if messages_infotrafic is None:
+            infotrafic = InfoTrafic(only_lines=['1', '2', '3'])
+            messages_infotrafic = infotrafic.messages
+            memcache.add(key_news, messages_infotrafic, 60 * 5)
+        messages.extend(messages_infotrafic)
+
+        key_news = u'ouestfrance'
+        messages_ouestfrance = memcache.get(key_news)
+        if messages_ouestfrance is None:
+            ouestfrance = OuestFrance()
+            messages_ouestfrance = ouestfrance.messages
+            memcache.add(key_news, messages_ouestfrance, 60 * 5)
+        messages.extend(messages_ouestfrance)
 
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps(messages))
