@@ -52,8 +52,22 @@ class TANStationJSON(webapp2.RequestHandler):
         self.response.write(json.dumps(station.__dict__))
 
 
+class NewsJSON(webapp2.RequestHandler):
+    def get(self):
+        messages = [
+            {'message': "Travaux 50 Otages-Hotel de ville a Nantes", 'source': "TAN Info Trafic"},
+            {'message': "Itineraire coupe en 2 a Foch Cathedrale", 'source': "TAN Info Trafic"},
+            {'message': "Travaux secteur Vincent Gache a Nantes", 'source': "TAN Info Trafic"},
+            {'message': "Renforts Scolaires", 'source': "TAN Info Trafic"},
+        ]
+
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.write(json.dumps(messages))
+
+
 app = webapp2.WSGIApplication([
                                 ('/', MainPage),
                                 ('/bicloo', BiclooStationJSON),
                                 ('/tan', TANStationJSON),
+                                ('/news', NewsJSON),
                               ], debug=True)

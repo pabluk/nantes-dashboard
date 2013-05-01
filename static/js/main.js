@@ -65,20 +65,19 @@ function updateTANStation(code, direction, element) {
 }
 
 function updateNewsStream() {
-    var messages = [
-        {message: "Travaux 50 Otages-Hôtel de ville à Nantes", source: "TAN Info Trafic"},
-        {message: "Itinéraire coupé en 2 à Foch Cathédrale", source: "TAN Info Trafic"},
-        {message: "Travaux secteur Vincent Gâche à Nantes", source: "TAN Info Trafic"},
-        {message: "Renforts Scolaires", source: "TAN Info Trafic"},
-    ];
-    return messages;
+    $.getJSON("/news")
+    .done(function(news){
+        messages = news;
+    });
 }
 
 function updateMessage() {
-    if (messages_pos == messages.length) { messages_pos = 0 }
-    $("#message").text(messages[messages_pos].message);
-    $("#source").text(messages[messages_pos].source);
-    messages_pos++;
+    if (messages.length > 0) {
+        if (messages_pos == messages.length) { messages_pos = 0 }
+        $("#message").text(messages[messages_pos].message);
+        $("#source").text(messages[messages_pos].source);
+        messages_pos++;
+    }
 }
 
 var messages = [];
@@ -98,7 +97,7 @@ $(document).ready(function()
     updateTANStation("VIAR", 2, "#tan");
     setInterval('updateTANStation("VIAR", 2, "#tan")', 30000);
 
-    messages = updateNewsStream();
+    updateNewsStream();
     updateMessage();
     setInterval('updateMessage()', 10000);
 
