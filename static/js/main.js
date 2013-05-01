@@ -54,10 +54,12 @@ function updateTANStation(code, direction, element) {
         $(element).show();
         $(element).html("<h3>TAN</h3>");
         $.each(station.slots, function(i, item){
-            if (i == 0) {
-                $(element).append("<h1>" + item.terminal + " " + item.time +"</h1>");
-            } else {
-                $(element).append("<h3>" + item.terminal + " " + item.time +"</h3>");
+            if (i < 3) {
+                if (i == 0) {
+                    $(element).append("<h1>" + item.terminal + " " + item.time +"</h1>");
+                } else {
+                    $(element).append("<h3>" + item.terminal + " " + item.time +"</h3>");
+                }
             }
         });
     });
