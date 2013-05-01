@@ -64,6 +64,27 @@ function updateTANStation(code, direction, element) {
     });
 }
 
+function updateNewsStream() {
+    var messages = [
+        "Travaux 50 Otages-Hôtel de ville à Nantes",
+        "Itinéraire coupé en 2 à Foch Cathédrale",
+        "Travaux secteur Vincent Gâche à Nantes",
+        "Renforts Scolaires",
+    ];
+    return messages;
+}
+
+function updateMessage() {
+    $("#infotrafic").fadeOut(function() {
+        if (messages_pos == messages.length) { messages_pos = 0 }
+        $(this).text(messages[messages_pos]);
+        messages_pos++;
+    }).fadeIn();
+}
+
+var messages = [];
+var messages_pos = 0;
+
 $(document).ready(function()
 {
     updateClock();
@@ -77,5 +98,10 @@ $(document).ready(function()
 
     updateTANStation("VIAR", 2, "#tan");
     setInterval('updateTANStation("VIAR", 2, "#tan")', 30000);
+
+    messages = updateNewsStream();
+    updateMessage();
+    setInterval('updateMessage()', 5000);
+
 });
 
