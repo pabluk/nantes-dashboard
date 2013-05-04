@@ -52,7 +52,7 @@ function updateTANStation(code, direction, element) {
     $.getJSON("/tan", {code: code, direction: direction})
     .done(function(station){
         $(element).show();
-        $(element).html("<h3>TAN</h3>");
+        $(element).html("<h4>Ligne 3 > Viarme - Talensac</h4>");
         $.each(station.slots, function(i, item){
             if (i < 3) {
                 var line = item.terminal + " " + item.time;
@@ -68,6 +68,7 @@ function updateNewsStream() {
     $.getJSON("/news")
     .done(function(news){
         messages = news;
+        updateMessage();
     });
 }
 
@@ -94,11 +95,13 @@ $(document).ready(function()
     updateBiclooStation(17, "Sainte Elisabeth", "#bicloo-2");
     setInterval('updateBiclooStation(17, "Sainte Elisabeth", "#bicloo-2")', 30000);
 
+    updateBiclooStation(7, "Barillerie", "#bicloo-3");
+    setInterval('updateBiclooStation(7, "Barillerie", "#bicloo-3")', 30000);
+
     updateTANStation("VIAR", 2, "#tan");
     setInterval('updateTANStation("VIAR", 2, "#tan")', 30000);
 
     updateNewsStream();
-    updateMessage();
     setInterval('updateMessage()', 15000);
 
 });
